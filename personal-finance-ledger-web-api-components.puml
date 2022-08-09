@@ -1,0 +1,75 @@
+@startuml personal-finance-ledger-web-api-components
+!include ./C4-PlantUML/C4_Component.puml
+!define osaPuml PlantUML-opensecurityarchitecture2-icons
+!define FONTAWESOME plantuml-icon-font-sprites/font-awesome-5
+!define DEVICONS plantuml-icon-font-sprites/devicons
+
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+
+!include DEVICONS/angular.puml
+!include DEVICONS/java.puml
+!include DEVICONS/postgresql.puml
+!include FONTAWESOME/users.puml
+
+
+!include <office/Servers/application_server>
+
+
+
+
+AddContainerTag("webApp", $sprite="application_server", $legendText="web app container")
+AddContainerTag("database", $sprite="postgresql", $legendText="database container")
+
+AddRelTag("implements", $lineStyle = DashedLine())
+
+Container(singlePageApp, "Single-Page Application","Javascript,React","Allows user to query/modify or create a ledger",$tags="webApp")
+System_Ext(keycloakServer, "Key Cloak Server","Identity and access management")
+
+Container_Boundary(c1,"Ledger Web Application API") {
+
+    
+    Component(userResource, "UserResource", "REST Resource","Provides endpoints for user authentication and information")
+    
+    Component(keycloakAdapter, "KeyCloakAdapter", "CDI2 Bean","Provides interfacing with Keycloak Server")
+    
+    Component(ledgerManagementResource, "LedgerManagementResource", "REST Resource","Provides endpoints for creating or updating a ledger")
+    
+    Component(ledgerQueryResource, "LedgerQueryResource", "REST Resource","Provides endpoints to query for ledger and transaction information")
+    
+    Component(ledgerManagementAdapter, "LedgerManagementAdapter", "CDI2 Bean","Provides ledger query functionality hydrating aggregates")
+    
+    Component(ledgerQueryAdapter, "LedgerQueryAdapter", "CDI2 Bean","Provides ledger query functionality hydrating aggregates")
+    
+    Component(ledgerRepository, "LedgerRepository", "CDI2 Bean","Provides ledger query functionality on db")
+    
+    
+    Component(ledgerManagementService, "LedgerManagementService", "CDI2 Bean","Provides functionality to manage ledger details")
+    
+    Component(ledgerQueryService, "LedgerQueryService", "CDI2 Bean","Provides functionality to query ledger information")
+    
+    
+    
+    
+    
+    
+    
+} 
+ContainerDb(ledgerDB, "Database", "PostgreSQL", "Stores ledger with transaction history", $tags="database")
+
+
+Rel(singlePageApp,userResource, "Makes API calls to","JWT/HTTPS")
+Rel(userResource,keycloakAdapter, "Uses")
+Rel(keycloakAdapter,keycloakServer, "Authenticates JWT Token", "JWT/HTTPS")
+Rel(singlePageApp,ledgerManagementResource, "Makes API calls to","JSON/HTTPS")
+Rel(singlePageApp,ledgerQueryResource, "Makes API calls to","JSON/HTTPS")
+Rel(ledgerManagementResource,ledgerManagementService,"Uses")
+Rel(ledgerManagementService,ledgerManagementAdapter,"Uses")
+Rel(ledgerManagementAdapter,ledgerRepository,"Uses")
+Rel(ledgerQueryResource,ledgerQueryService,"Uses")
+Rel(ledgerQueryService,ledgerQueryAdapter,"Uses")
+Rel(ledgerQueryAdapter,ledgerRepository,"Uses")
+Rel(ledgerRepository,ledgerDB, "Reads","JDBC")
+
+
+@enduml

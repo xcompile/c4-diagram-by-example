@@ -1,0 +1,39 @@
+@startuml personal-finance-system-container
+!include ./C4-PlantUML/C4_Container.puml
+!define osaPuml PlantUML-opensecurityarchitecture2-icons
+!define FONTAWESOME plantuml-icon-font-sprites/font-awesome-5
+!define DEVICONS plantuml-icon-font-sprites/devicons
+
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+
+!include DEVICONS/angular.puml
+!include DEVICONS/java.puml
+!include DEVICONS/postgresql.puml
+!include FONTAWESOME/users.puml
+
+!include <office/Servers/application_server>
+
+
+
+AddPersonTag("users", $sprite="osa_user_large_group", $legendText="aggregated user")
+AddContainerTag("webAppLedger", $sprite="application_server", $legendText="web app container")
+AddContainerTag("database", $sprite="postgresql", $legendText="database container")
+
+Person(personAlias, "Users", "Users managing their personal finance",$tags="users")
+System_Boundary(c1,"Personal Finance System") {
+
+    Container(singlePageApp, "Single-Page Application","Javascript,React","Allows user to query/modify or create a ledger",$tags="webApp")
+    
+    Container(ledgerAPI, "Ledger Web Application API","Java, Quarkus","Provides ledger functionalities via JSON/HTTPS API",$tags="webApp")
+    
+    ContainerDb(ledgerDB, "Database", "PostgreSQL", "Stores ledger with transaction history", $tags="database")
+} 
+System_Ext(keycloakServer, "Key Cloak Server","Identity and access management")
+
+Rel(ledgerAPI,keycloakServer,"Authenticates JWT Token", "JWT/HTTPS")
+Rel(personAlias, singlePageApp, "visits personal finance app", "HTTPS")
+Rel(singlePageApp,ledgerAPI, "Makes API calls to","JSON/HTTPS")
+Rel_R(ledgerAPI,ledgerDB,"Reads/Writes","JDBC")
+
+@enduml
