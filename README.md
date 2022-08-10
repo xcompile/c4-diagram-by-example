@@ -20,5 +20,6 @@ make clean
 
 ## Links
 - Plantuml(cli): [plantuml.com/command-line](https://plantuml.com/command-line)
+- C4 Plantuml: [github.com/plantuml-stdlib/C4-PlantUML](https://github.com/plantuml-stdlib/C4-PlantUML)
 - C4 Model: [c4model.com](c4model.com)
 
