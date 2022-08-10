@@ -1,0 +1,61 @@
+@startuml personal-finance-ledger-web-api-components-query
+!include ../include/submodules/C4-PlantUML/C4_Component.puml
+!define osaPuml ../include/submodules/PlantUML-opensecurityarchitecture2-icons
+!define FONTAWESOME ../include/submodules/plantuml-icon-font-sprites/font-awesome-5
+!define DEVICONS ../include/submodules/plantuml-icon-font-sprites/devicons
+
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+
+!include DEVICONS/angular.puml
+!include DEVICONS/java.puml
+!include DEVICONS/postgresql.puml
+!include FONTAWESOME/users.puml
+
+
+!include <office/Servers/application_server>
+
+
+
+
+AddContainerTag("webApp", $sprite="application_server", $legendText="web app container")
+AddContainerTag("database", $sprite="postgresql", $legendText="database container")
+
+AddRelTag("implements", $lineStyle = DashedLine())
+
+Container(singlePageApp, "Single-Page Application","Javascript,React","Allows user to query/modify or create a ledger",$tags="webApp")
+System_Ext(keycloakServer, "Key Cloak Server","Identity and access management")
+
+Container_Boundary(c1,"Ledger Web Application API (Query Transactions)") {
+
+    
+    Component(userResource, "UserResource", "REST Resource","Provides endpoints for user authentication and information")
+    
+    Component(keycloakAdapter, "KeyCloakAdapter", "CDI2 Bean","Provides interfacing with Keycloak Server")
+    
+    
+    
+    Component(queryLedgerTransactionsResource, "QueryLedgerTransactionsResource", "REST Resource","Allows users to query for ledger transactions")
+    
+    
+    Component(queryLedgerTransactions, "QueryLedgerTransactions", "CDI2 Bean","Provides functionality to query ledger transactions")
+    
+    Component(loadLedgerAdapter, "LoadLedgerAdapter", "CDI2 Bean","Provides functionality to restore ledger aggregate from persistent storage")
+    
+    Component(ledgerRepository, "LedgerRepository", "CDI2 Bean","Provides functionality to query for ledger on database")
+    
+} 
+ContainerDb(ledgerDB, "Database", "PostgreSQL", "Stores ledger with transaction history", $tags="database")
+
+
+Rel(singlePageApp,userResource, "Makes API calls to","JWT/HTTPS")
+Rel(userResource,keycloakAdapter, "Uses")
+Rel(keycloakAdapter,keycloakServer, "Authenticates JWT Token", "JWT/HTTPS")
+Rel(singlePageApp,queryLedgerTransactionsResource, "Makes API calls to","JSON/HTTPS")
+Rel(queryLedgerTransactionsResource,queryLedgerTransactions,"Uses")
+Rel(queryLedgerTransactions,loadLedgerAdapter,"Uses")
+Rel(loadLedgerAdapter,ledgerRepository,"Uses")
+Rel(ledgerRepository,ledgerDB, "Reads","JDBC")
+
+
+@enduml
