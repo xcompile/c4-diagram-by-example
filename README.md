@@ -19,6 +19,6 @@ make clean
 
 
 ## Links
-Plantuml(cli): [plantuml.com/command-line](https://plantuml.com/command-line)
-C4 Model: [c4model.com](c4model.com)
+- Plantuml(cli): [plantuml.com/command-line](https://plantuml.com/command-line)
+- C4 Model: [c4model.com](c4model.com)
 
