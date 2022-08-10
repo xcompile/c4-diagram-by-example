@@ -1,0 +1,25 @@
+@startuml personal-finance-context
+!include ../include/submodules/C4-PlantUML/C4_Context.puml
+!define osaPuml ../include/submodules/PlantUML-opensecurityarchitecture2-icons
+!define FONTAWESOME ../include/submodules/plantuml-icon-font-sprites/font-awesome-5
+
+!include osaPuml/Common.puml
+!include osaPuml/User/all.puml
+
+!include FONTAWESOME/users.puml
+
+
+AddPersonTag("users", $sprite="osa_user_large_group", $legendText="aggregated user")
+
+Person(users, "Person", "Users managing their personal finance", $tags="users")
+System(personalFinanceSystem, "Personal Finance System","Allows users to manager their personal finance")
+
+System_Ext(keycloakServer, "Key Cloak Server","Identity and access management")
+
+Rel(personalFinanceSystem,keycloakServer,"Authenticates users,authorizes actions")
+Rel(users, personalFinanceSystem, "manage personal finance")
+
+
+
+
+@enduml

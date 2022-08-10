@@ -1,9 +1,9 @@
-[submodule "docs/C4-PlantUML"]
-	path = docs/C4-PlantUML
+[submodule "include/submodules/C4-PlantUML"]
+	path = include/submodules/C4-PlantUML
 	url = https://github.com/plantuml-stdlib/C4-PlantUML.git
-[submodule "docs/PlantUML-opensecurityarchitecture2-icons"]
-	path = docs/PlantUML-opensecurityarchitecture2-icons
+[submodule "include/submodules/PlantUML-opensecurityarchitecture2-icons"]
+	path = include/submodules/PlantUML-opensecurityarchitecture2-icons
 	url = https://github.com/Crashedmind/PlantUML-opensecurityarchitecture2-icons
-[submodule "docs/plantuml-icon-font-sprites"]
-	path = docs/plantuml-icon-font-sprites
+[submodule "include/submodules/plantuml-icon-font-sprites"]
+	path = include/submodules/plantuml-icon-font-sprites
 	url = https://github.com/tupadr3/plantuml-icon-font-sprites

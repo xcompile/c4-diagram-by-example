@@ -5,13 +5,14 @@ Example for Context, Containers, Components diagram according to [c4model.com](c
 
 ## How To Build
 
-requires make and java
+requires make and java, transform **doc/*.puml** into artifacts in **doc/build/**
 
 ```sh
-make all
+make png
+make svg
 ```
 
-clear all artifacts
+clear all artifacts (build directory)
 ```sh
 make clean
 ```
