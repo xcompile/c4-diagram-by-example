@@ -1,9 +1,9 @@
 PU=$(JAVA_HOME)/bin/java -jar ../include/libraries/plantuml-1.2022.6.jar -o ./build
 
-svg:
+svg: 
 	$(PU) -tsvg *.puml
-png:
+png: 
 	$(PU) -tpng *.puml
-all: svg png
+all: clean svg png
 clean:
 	rm -rf build
