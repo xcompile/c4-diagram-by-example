@@ -1,4 +1,4 @@
-@startuml personal-finance-ledger-web-api-components-query
+@startuml personal-finance-system-component-web-api-query-ledger-transactions
 !include ../include/submodules/C4-PlantUML/C4_Component.puml
 !define osaPuml ../include/submodules/PlantUML-opensecurityarchitecture2-icons
 !define FONTAWESOME ../include/submodules/plantuml-icon-font-sprites/font-awesome-5
